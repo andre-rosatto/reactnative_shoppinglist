@@ -1,5 +1,5 @@
 import { Colors } from "@/constants/Colors";
-import { Appearance, FlatList, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { Appearance, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from 'expo-status-bar';
 import { useState } from "react";
@@ -26,6 +26,10 @@ export default function Index() {
 		setLists(lists => lists.filter(list => list.key !== item.key));
 	}
 
+	const handleItemPress = (item: List) => {
+		
+	}
+
   return (
     <SafeAreaView style={styles.container}>
 			<StatusBar style={theme === 'dark' ? 'light' : 'dark'} />
@@ -35,7 +39,7 @@ export default function Index() {
 					style={[styles.text, styles.input]}
 					placeholderTextColor={Colors[theme].placeholder}
 					placeholder={getCurrentDate()}
-					value={newList}
+					defaultValue={newList}
 					onChangeText={setNewList}
 				/>
 				<Pressable onPress={handleAddPress}>
@@ -48,7 +52,9 @@ export default function Index() {
 				data={lists}
 				renderItem={({ item }) => (
 					<View style={styles.listItem}>
-						<Text style={styles.text}>{item.title}</Text>
+						<Pressable onPress={() => handleItemPress(item)}>
+							<Text style={styles.text}>{item.title}</Text>
+						</Pressable>
 						<Pressable onPress={() => handleDeletePress(item)}>
 							<Ionicons name="trash" size={24} color={Colors[theme].alert} />
 						</Pressable>
