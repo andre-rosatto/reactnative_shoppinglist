@@ -9,6 +9,8 @@ import ListItem from "@/components/ListItem";
 import AddIemBar from "@/components/AddItemBar";
 import useAsyncStorage from "@/hooks/useAsyncStorage";
 import { STORAGE_NAME } from "@/globals/env";
+import { Stack } from "expo-router";
+import { COLORS } from "@/globals/colors";
 
 export default function Index() {
 	const [lists, setLists] = useState<List[]>([]);
@@ -37,6 +39,17 @@ export default function Index() {
 
   return (
     <SafeAreaView style={styles.container}>
+			<Stack.Screen
+				options={{
+					headerTitle: `ShoppingList`,
+					headerTitleAlign: 'center',
+					headerTintColor: COLORS[theme].text,
+					headerStyle: {
+						backgroundColor: COLORS[theme].background,
+					}
+				}}
+			/>
+
 			<StatusBar style={theme === 'dark' ? 'light' : 'dark'} />
 
 			<AddIemBar type="list" onAddPress={handleAddPress} />
