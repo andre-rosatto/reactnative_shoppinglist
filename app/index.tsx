@@ -4,40 +4,25 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from "react";
 import { isLists, List } from "@/typings/types";
 import Animated, { LinearTransition } from 'react-native-reanimated';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createStyles } from "@/globals/utils";
 import ListItem from "@/components/ListItem";
 import AddIemBar from "@/components/AddItemBar";
+import useAsyncStorage from "@/hooks/useAsyncStorage";
+import { STORAGE_NAME } from "@/globals/env";
 
 export default function Index() {
 	const [lists, setLists] = useState<List[]>([]);
+	const { data, saveStorage } = useAsyncStorage<List[]>(STORAGE_NAME);
 
 	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const jsonValue = await AsyncStorage.getItem('ShoppingList');
-				const storageLists = jsonValue !== null ? JSON.parse(jsonValue) : [];
-				if (isLists(storageLists)) {
-					setLists(storageLists);
-				}
-			} catch (err) {
-				console.error(err);
-			}
+		if (data && isLists(data)) {
+			setLists(data);
+		} else {
+			setLists([]);
 		}
-		fetchData();
-	}, []);
+	}, [data]);
 
-	useEffect(() => {
-		const storeData = async () => {
-			try {
-				const jsonValue = JSON.stringify(lists);
-				await AsyncStorage.setItem('ShoppingList', jsonValue);
-			} catch (err) {
-				console.error(err);
-			}
-		}
-		storeData();
-	}, [lists]);
+	useEffect(() => saveStorage(lists), [lists]);
 
 	const theme = Appearance.getColorScheme() === 'dark' ? 'dark' : 'light';
 	const styles = createStyles(theme);

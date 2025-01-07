@@ -1,4 +1,4 @@
-import { Colors } from "@/constants/Colors";
+import { COLORS } from "@/globals/colors";
 import { createStyles, getCurrentDate } from "@/globals/utils";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useState } from "react";
@@ -30,13 +30,13 @@ export default function AddIemBar({ type, onAddPress }: AddItemBarProps) {
 		<View style={styles.inputContainer}>
 			<TextInput
 				style={[styles.text, styles.input]}
-				placeholderTextColor={Colors[theme].placeholder}
+				placeholderTextColor={COLORS[theme].placeholder}
 				placeholder={type === 'list' ? getCurrentDate() : 'Novo item'}
 				value={newItem}
 				onChangeText={setNetItem}
 			/>
 			<Pressable onPress={handleAddPress}>
-				<Ionicons name="add-circle-outline" size={48} color={Colors[theme].text} />
+				<Ionicons name="add-circle-outline" size={48} color={COLORS[theme].text} />
 			</Pressable>
 		</View>
 	);

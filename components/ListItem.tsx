@@ -1,10 +1,10 @@
-import { Colors } from "@/constants/Colors";
+import { COLORS } from "@/globals/colors";
 import { createStyles } from "@/globals/utils";
 import { isItem, isList, Item, List } from "@/typings/types";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Href, useRouter } from "expo-router";
 import { useState } from "react";
-import { Appearance, Pressable, StyleProp, TextInput, TextStyle } from "react-native";
+import { Appearance, Pressable, StyleProp, Text, TextInput, TextStyle } from "react-native";
 import { View } from "react-native";
 
 interface ListItemProps {
@@ -75,23 +75,23 @@ export default function ListItem({
 			>
 				{(isItem(item) && item.bought) && <Ionicons name="checkmark" size={24} style={styles.itemCheck} />}
 
-				<TextInput
-					style={[
-						styles.text,
-						item.key === editKey && styles.input,
-						(isItem(item) && item.bought) && styles.itemBought
-					]}
+
+				{item.key === editKey
+				? <TextInput
+					style={[styles.text, styles.input]}
 					value={item.title}
-					editable={item.key === editKey}
 					onChangeText={handleChangeText}
 					onBlur={() => setEditKey(null)}
-					onFocus={e => e.target.focus()}
 					selectTextOnFocus
+					autoFocus
 				/>
+				: <Text
+					style={[styles.text, (isItem(item) && item.bought) && styles.itemBought]}
+				>{item.title}</Text>}
 			</Pressable>
 
 			<Pressable onPress={handleDeletePress}>
-				<Ionicons name="trash" size={24} color={Colors[theme].alert} />
+				<Ionicons name="trash" size={24} color={COLORS[theme].alert} />
 			</Pressable>
 		</View>
 	);

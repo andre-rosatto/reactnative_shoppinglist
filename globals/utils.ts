@@ -1,4 +1,4 @@
-import { Colors } from "@/constants/Colors";
+import { COLORS } from "@/globals/colors";
 import { StyleSheet } from "react-native";
 
 export const getCurrentDate = (): string => {
@@ -9,11 +9,12 @@ export const createStyles = (theme: 'dark' | 'light') => {
 	return StyleSheet.create({
 		container: {
 			flex: 1,
-			backgroundColor: Colors[theme].background,
+			backgroundColor: COLORS[theme].background,
 		},
 		text: {
-			color: Colors[theme].text,
+			color: COLORS[theme].text,
 			fontSize: 18,
+			padding: 11,
 		},
 		inputContainer: {
 			padding: 10,
@@ -25,7 +26,7 @@ export const createStyles = (theme: 'dark' | 'light') => {
 			borderWidth: 1,
 			borderRadius: 4,
 			padding: 10,
-			borderColor: Colors[theme].text,
+			borderColor: COLORS[theme].text,
 			flex: 1,
 		},
 		listContainer: {
@@ -38,7 +39,7 @@ export const createStyles = (theme: 'dark' | 'light') => {
 			justifyContent: 'space-between',
 			alignItems: 'center',
 			borderBottomWidth: 1,
-			borderBottomColor: Colors[theme].border,
+			borderBottomColor: COLORS[theme].border,
 			padding: 4,
 			gap: 20,
 		},
@@ -49,11 +50,12 @@ export const createStyles = (theme: 'dark' | 'light') => {
 			gap: 2,
 		},
 		itemCheck: {
-			color: Colors[theme].text,
+			color: COLORS[theme].text,
 			width: 24,
 		},
 		itemBought: {
-			color: Colors[theme].placeholder,
+			color: COLORS[theme].placeholder,
+			textDecorationLine: 'line-through',
 		}
 	});
 }

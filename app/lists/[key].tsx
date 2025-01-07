@@ -1,9 +1,10 @@
 import AddIemBar from "@/components/AddItemBar";
 import ListItem from "@/components/ListItem";
-import { Colors } from "@/constants/Colors";
+import { COLORS } from "@/globals/colors";
+import { STORAGE_NAME } from "@/globals/env";
 import { createStyles } from "@/globals/utils";
+import useAsyncStorage from "@/hooks/useAsyncStorage";
 import { isLists, Item, List } from "@/typings/types";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { Appearance } from "react-native";
@@ -13,38 +14,21 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function ListScreen() {
 	const { key } = useLocalSearchParams();
 	const [lists, setLists] = useState<List[]>([]);
-	const [newItem, setNewItem] = useState<string>('');
+	const { data, saveStorage } = useAsyncStorage(STORAGE_NAME)
 
 	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const jsonValue = await AsyncStorage.getItem('ShoppingList');
-				const storageLists = jsonValue !== null ? JSON.parse(jsonValue) : [];
-				if (isLists(storageLists)) {
-					setLists(storageLists);
-				}
-			} catch (err) {
-				console.error(err);
-			}
+		if (data && isLists(data)) {
+			setLists(data);
+		} else {
+			setLists([]);
 		}
-		fetchData();
-	}, []);
+	}, [data]);
+
+	useEffect(() => saveStorage(lists), [lists]);
 
 	const theme = Appearance.getColorScheme() === 'dark' ? 'dark' : 'light';
 	const styles = createStyles(theme);
 	const currentList = lists.find(list => list.key === key);
-
-	useEffect(() => {
-		const storeData = async () => {
-			try {
-				const jsonValue = JSON.stringify(lists);
-				await AsyncStorage.setItem('ShoppingList', jsonValue);
-			} catch (err) {
-				console.error(err);
-			}
-		}
-		storeData();
-	}, [lists]);
 
 	if (!currentList) return null;
 
@@ -70,9 +54,9 @@ export default function ListScreen() {
 				options={{
 					headerTitle: `${currentList.title}`,
 					headerTitleAlign: 'center',
-					headerTintColor: Colors[theme].text,
+					headerTintColor: COLORS[theme].text,
 					headerStyle: {
-						backgroundColor: Colors[theme].background,
+						backgroundColor: COLORS[theme].background,
 					}
 				}}
 			/>
