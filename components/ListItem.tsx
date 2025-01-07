@@ -4,7 +4,7 @@ import { isItem, isList, Item, List } from "@/typings/types";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Href, useRouter } from "expo-router";
 import { useState } from "react";
-import { Appearance, Pressable, StyleProp, Text, TextInput, TextStyle } from "react-native";
+import { Appearance, Pressable, Text, TextInput } from "react-native";
 import { View } from "react-native";
 
 interface ListItemProps {
