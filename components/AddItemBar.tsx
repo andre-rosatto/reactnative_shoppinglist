@@ -19,7 +19,7 @@ export default function AddIemBar({ type, onAddPress }: AddItemBarProps) {
 		switch (type) {
 			case "list":
 				onAddPress(newItem || getCurrentDate());
-				break
+				break;
 			default:
 				onAddPress(newItem || 'Novo item');
 		}

@@ -4,7 +4,7 @@ import { COLORS } from "@/globals/colors";
 import { STORAGE_NAME } from "@/globals/env";
 import { createStyles } from "@/globals/utils";
 import useAsyncStorage from "@/hooks/useAsyncStorage";
-import { isLists, Item, List } from "@/typings/types";
+import { Item, List } from "@/typings/types";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { Appearance } from "react-native";
@@ -14,17 +14,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function ListScreen() {
 	const { key } = useLocalSearchParams();
 	const [lists, setLists] = useState<List[]>([]);
-	const { data, saveStorage } = useAsyncStorage(STORAGE_NAME)
+	const { loadStorage, saveStorage } = useAsyncStorage<List[]>(STORAGE_NAME);
 
 	useEffect(() => {
-		if (data && isLists(data)) {
-			setLists(data);
-		} else {
-			setLists([]);
-		}
-	}, [data]);
-
-	useEffect(() => saveStorage(lists), [lists]);
+		loadStorage(data => setLists(data ?? []));
+	}, []);
 
 	const theme = Appearance.getColorScheme() === 'dark' ? 'dark' : 'light';
 	const styles = createStyles(theme);
@@ -33,19 +27,16 @@ export default function ListScreen() {
 	if (!currentList) return null;
 
 	const handleNewItemPress = (val: string) => {
-		const getNewItem = (): Item => {
-			return ({
-				key: Date.now().toString(),
-				title: val,
-				bought: false
-			});
-		}
-		
-		setLists(lists =>
-			lists.map(list =>
-				list.key !== key ? list : {...list, items: [getNewItem(), ...list.items]}
-			)
+		const newItem: Item = ({
+			key: Date.now().toString(),
+			title: val,
+			bought: false
+		});
+		const nextLists= lists.map(list =>
+			list.key !== key ? list : {...list, items: [newItem, ...list.items]}
 		);
+		setLists(nextLists);
+		saveStorage(nextLists);
 	}
 
 	return (
@@ -74,7 +65,10 @@ export default function ListScreen() {
 						lists={lists}
 						listKey={currentList.key}
 						item={item}
-						setLists={setLists}
+						onListChange={(nextLists: List[]) => {
+							setLists(nextLists);
+							saveStorage(nextLists);
+						}}
 					/>
 				)}
 			/>

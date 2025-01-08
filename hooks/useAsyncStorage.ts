@@ -1,22 +1,19 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 
-export default function useAsyncStorage<T>(storageName: string) {
-	const [data, setData] = useState<T | null>(null);
-
-	useEffect(() => {
+export default function Storage<T>(storageName: string) {
+	const loadStorage = useCallback((cb: (d: T) => void) => {
 		const fetchData = async () => {
-			setData(null);
 			try {
 				const jsonValue = await AsyncStorage.getItem(storageName);
 				const storageData = jsonValue !== null ? JSON.parse(jsonValue) : [];
-				setData(storageData);
+				cb(storageData);
 			} catch (err) {
 				console.error(err);
 			}
 		}
 		fetchData();
-	}, [storageName]);
+	}, []);
 
 	const saveStorage = useCallback((saveData: T) => {
 		const storeData = async () => {
@@ -30,5 +27,5 @@ export default function useAsyncStorage<T>(storageName: string) {
 		storeData();
 	}, [storageName]);
 
-	return { data, saveStorage };
+	return { loadStorage, saveStorage };
 }

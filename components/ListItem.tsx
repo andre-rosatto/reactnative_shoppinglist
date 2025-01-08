@@ -11,14 +11,14 @@ interface ListItemProps {
 	lists: List[],
 	listKey: string,
 	item: List | Item,
-	setLists: React.Dispatch<React.SetStateAction<List[]>>,
+	onListChange: (newList: List[]) => void
 }
 
 export default function ListItem({
 	lists,
 	listKey,
 	item,
-	setLists,
+	onListChange
 }: ListItemProps) {
 	const [editKey, setEditKey] = useState<string | null>(null);
 	const router = useRouter();
@@ -34,35 +34,32 @@ export default function ListItem({
 			const currentList = nextLists.find(list => list.key === listKey);
 			if (!currentList) return;
 			currentList.items = currentList.items.map(i => i.key !== item.key ? i : {...i, bought: !i.bought});
-			setLists(lists => lists.map(list => list.key !== currentList.key ? list : currentList));
+			onListChange(nextLists.map(list => list.key !== currentList.key ? list : currentList));
 		}
 	}
 
 	const handleChangeText = (val: string) => {
 		if (isList(item)) {
-			setLists(lists =>
-				lists.map(list =>
-					list.key !== item.key ? list : {...list, title: val}
-				)
-			);
+			const nextLists = lists.map(list => list.key !== item.key ? list : {...list, title: val});
+			onListChange(nextLists);
 		} else if (isItem(item)) {
 			const nextLists = [...lists];
 			const currentList = nextLists.find(list => list.key === listKey);
 			if (!currentList) return;
 			currentList.items = currentList.items.map(i => i.key !== item.key ? i : {...i, title: val});
-			setLists(lists => lists.map(list => list.key !== currentList.key ? list : currentList));
+			onListChange(nextLists.map(list => list.key !== currentList.key ? list : currentList));
 		}
 	}
 
 	const handleDeletePress = () => {
 		if (isList(item)) {
-			setLists(lists => lists.filter(list => list.key !== item.key));
+			onListChange(lists.filter(list => list.key !== item.key));
 		} else if (isItem(item)) {
 			const nextLists = [...lists];
 			const currentList = nextLists.find(list => list.key === listKey);
 			if (!currentList) return;
 			currentList.items = currentList.items.filter(i => i.key !== item.key);
-			setLists(lists => lists.map(list => list.key !== currentList.key ? list : currentList));
+			onListChange(nextLists.map(list => list.key !== currentList.key ? list : currentList));
 		}
 	}
 
@@ -74,7 +71,6 @@ export default function ListItem({
 				onLongPress={() => setEditKey(item.key)}
 			>
 				{(isItem(item) && item.bought) && <Ionicons name="checkmark" size={24} style={styles.itemCheck} />}
-
 
 				{item.key === editKey
 				? <TextInput

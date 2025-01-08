@@ -1,40 +1,37 @@
 import { Appearance } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from 'expo-status-bar';
-import { useEffect, useState } from "react";
-import { isLists, List } from "@/typings/types";
+import { useCallback, useState } from "react";
+import { List } from "@/typings/types";
 import Animated, { LinearTransition } from 'react-native-reanimated';
 import { createStyles } from "@/globals/utils";
 import ListItem from "@/components/ListItem";
 import AddIemBar from "@/components/AddItemBar";
 import useAsyncStorage from "@/hooks/useAsyncStorage";
 import { STORAGE_NAME } from "@/globals/env";
-import { Stack } from "expo-router";
+import { Stack, useFocusEffect } from "expo-router";
 import { COLORS } from "@/globals/colors";
 
 export default function Index() {
 	const [lists, setLists] = useState<List[]>([]);
-	const { data, saveStorage } = useAsyncStorage<List[]>(STORAGE_NAME);
+	const { loadStorage, saveStorage } = useAsyncStorage<List[]>(STORAGE_NAME);
 
-	useEffect(() => {
-		if (data && isLists(data)) {
-			setLists(data);
-		} else {
-			setLists([]);
-		}
-	}, [data]);
-
-	useEffect(() => saveStorage(lists), [lists]);
+	useFocusEffect(useCallback(() => {
+		loadStorage(data => setLists(data));
+	}, []));
 
 	const theme = Appearance.getColorScheme() === 'dark' ? 'dark' : 'light';
 	const styles = createStyles(theme);
 
 	const handleAddPress = (val: string) => {
-		setLists([{
+		const newList = {
 			key: Date.now().toString(),
 			title: val,
 			items: []
-		}, ...lists]);
+		};
+		const nextLists = [newList, ...lists];
+		setLists(nextLists);
+		saveStorage(nextLists);
 	}
 
   return (
@@ -63,7 +60,10 @@ export default function Index() {
 						lists={lists}
 						listKey={item.key}
 						item={item}
-						setLists={setLists}
+						onListChange={(nextLists: List[]) => {
+							setLists(nextLists);
+							saveStorage(nextLists);
+						}}
 					/>
 				)}
 			/>

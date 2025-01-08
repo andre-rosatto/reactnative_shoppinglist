@@ -1,6 +1,7 @@
 import { COLORS } from "@/globals/colors";
 import { StyleSheet } from "react-native";
 
+
 export const getCurrentDate = (): string => {
 	return new Date().toLocaleDateString();
 }
