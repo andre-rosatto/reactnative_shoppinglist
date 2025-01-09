@@ -8,7 +8,7 @@ import { Item, List } from "@/typings/types";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { Appearance } from "react-native";
-import Animated from "react-native-reanimated";
+import Animated, { LinearTransition } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ListScreen() {
@@ -66,6 +66,7 @@ export default function ListScreen() {
 			<Animated.FlatList
 				style={styles.listContainer}
 				data={sortItems(currentList.items)}
+				itemLayoutAnimation={LinearTransition}
 				renderItem={({ item }) => (
 					<ListItem
 						lists={lists}
