@@ -26,6 +26,12 @@ export default function ListScreen() {
 
 	if (!currentList) return null;
 
+	const sortItems = (items: Item[]): Item[] => {
+		const result = [...items];
+		result.sort((a, b) => !a.bought && b.bought ? -1 : 1);
+		return result;
+	}
+
 	const handleNewItemPress = (val: string) => {
 		const newItem: Item = ({
 			key: Date.now().toString(),
@@ -59,7 +65,7 @@ export default function ListScreen() {
 
 			<Animated.FlatList
 				style={styles.listContainer}
-				data={currentList.items}
+				data={sortItems(currentList.items)}
 				renderItem={({ item }) => (
 					<ListItem
 						lists={lists}

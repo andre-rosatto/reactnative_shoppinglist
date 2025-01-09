@@ -63,6 +63,11 @@ export default function ListItem({
 		}
 	}
 
+	const isComplete = (
+		(isList(item) && item.items.length > 0 && item.items.every(i => i.bought))
+		|| (isItem(item) && item.bought)
+	);
+
 	return (
 		<View style={styles.listItem}>
 
@@ -70,7 +75,7 @@ export default function ListItem({
 				onPress={handleItemPress}
 				onLongPress={() => setEditKey(item.key)}
 			>
-				{(isItem(item) && item.bought) && <Ionicons name="checkmark" size={24} style={styles.itemCheck} />}
+				{isComplete && <Ionicons name="checkmark" size={24} style={styles.itemCheck} />}
 
 				{item.key === editKey
 				? <TextInput
@@ -82,7 +87,7 @@ export default function ListItem({
 					autoFocus
 				/>
 				: <Text
-					style={[styles.text, (isItem(item) && item.bought) && styles.itemBought]}
+					style={[styles.text, isComplete && styles.itemBought]}
 				>{item.title}</Text>}
 			</Pressable>
 
