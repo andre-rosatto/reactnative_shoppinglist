@@ -17,7 +17,7 @@ export default function AddIemBar({ type, onAddPress }: AddItemBarProps) {
 
 	const handleAddPress = () => {
 		switch (type) {
-			case "list":
+			case 'list':
 				onAddPress(newItem || getCurrentDate());
 				break;
 			default:

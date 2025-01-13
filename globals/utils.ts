@@ -57,6 +57,39 @@ export const createStyles = (theme: 'dark' | 'light') => {
 		itemBought: {
 			color: COLORS[theme].placeholder,
 			textDecorationLine: 'line-through',
+		},
+		compareContainer: {
+			flex: 1,
+			justifyContent: 'space-between',
+			marginBottom: 4,
+		},
+		compareDataContainer: {
+			flex: 1,
+			flexDirection: 'row',
+			justifyContent: 'space-between',
+			gap: 20,
+		},
+		compareField: {
+			flex: 1,
+			gap: 4,
+		},
+		compareItemLabel: {
+			fontSize: 12,
+			color: COLORS[theme].text,
+		},
+		compareItemInput: {
+			fontSize: 14,
+			color: COLORS[theme].text,
+			borderColor: COLORS[theme].placeholder,
+			borderWidth: 1,
+			paddingHorizontal: 8,
+			borderRadius: 4,
+		},
+		compareItemResult: {
+			fontSize: 20,
+			color: COLORS[theme].text,
+			flex: 1,
+			textAlignVertical: 'center',
 		}
 	});
 }

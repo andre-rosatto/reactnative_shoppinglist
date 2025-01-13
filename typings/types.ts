@@ -1,3 +1,19 @@
+export type PricedItem = {
+	key: string;
+	title: string;
+	price: number;
+	amount: number;
+}
+
+export function isPricedItem(item: any): item is PricedItem {
+	return (
+		'key' in item
+		&& 'title' in item
+		&& 'price' in item
+		&& 'amount' in item
+	);
+}
+
 export type Item = {
 	key: string;
 	title: string;
