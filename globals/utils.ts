@@ -90,6 +90,9 @@ export const createStyles = (theme: 'dark' | 'light') => {
 			color: COLORS[theme].text,
 			flex: 1,
 			textAlignVertical: 'center',
+		},
+		inputAlert: {
+			borderColor: COLORS[theme].alert,
 		}
 	});
 }

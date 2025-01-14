@@ -31,7 +31,11 @@ export default function Compare() {
 
 	const sortItems = (): PricedItem[] => {
 		const sortedItems = [...items];
-		sortedItems.sort((a, b) => pricePerUnit(a) - pricePerUnit(b));
+		sortedItems.sort((a, b) => {
+			if (a.price < 0.01 || a.amount < 0.01) return -1;
+			if (b.price < 0.01 || b.amount < 0.01) return 1;
+			return pricePerUnit(a) - pricePerUnit(b);
+		});
 		return sortedItems;
 	}
 
@@ -40,7 +44,7 @@ export default function Compare() {
 			key: Date.now().toString(),
 			title: val,
 			price: 0,
-			amount: 1
+			amount: 0
 		}, ...items]);
 	}
 	
@@ -103,7 +107,10 @@ export default function Compare() {
 								<View style={styles.compareField}>
 									<Text style={styles.compareItemLabel}>Preço</Text>
 									<TextInput
-										style={styles.compareItemInput}
+										style={[
+											styles.compareItemInput,
+											item.price < 0.01 && styles.inputAlert
+										]}
 										selectTextOnFocus
 										keyboardType="numeric"
 										value={(editItem.key === item.key && editItem.field === 'price') ? editItem.value : item.price.toFixed(2)}
@@ -116,7 +123,10 @@ export default function Compare() {
 								<View style={styles.compareField}>
 									<Text style={styles.compareItemLabel}>Quantidade</Text>
 									<TextInput
-										style={styles.compareItemInput}
+										style={[
+											styles.compareItemInput,
+											item.amount < 0.01 && styles.inputAlert
+										]}
 										selectTextOnFocus
 										keyboardType="numeric"
 										value={(editItem.key === item.key && editItem.field === 'amount') ? editItem.value : item.amount.toFixed(2)}
