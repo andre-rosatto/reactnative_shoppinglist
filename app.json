@@ -2,7 +2,7 @@
   "expo": {
     "name": "ShoppingList",
     "slug": "ShoppingList",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -10,7 +10,7 @@
     "newArchEnabled": true,
     "splash": {
       "image": "./assets/images/splash-icon.png",
-      "backgroundColor": "#ffffff",
+      "backgroundColor": "#a5de9c",
       "resizeMode": "contain"
     },
     "ios": {
@@ -19,7 +19,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#a5de9c"
       },
       "package": "com.linus1178.ShoppingList"
     },
