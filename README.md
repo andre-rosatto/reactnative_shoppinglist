@@ -1,50 +1,25 @@
-# Welcome to your Expo app 👋
+# React Native Shopping List
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+<b>React Native Shopping List</b> is a mobile app for creating and managing shopping lists. You can add as many lists as you want, and you can add as many items as you want to them. It also has a handy price comparison feature.
 
-## Get started
+It follows the device's dark/light theme.
 
-1. Install dependencies
+## Screenshots
 
-   ```bash
-   npm install
-   ```
+![Shopping lists: light theme](https://github.com/user-attachments/assets/4852d6eb-fe88-4cab-8aa4-7b59bc7e9c6f)
+![Shopping lists: dark theme](https://github.com/user-attachments/assets/0ac9510a-aceb-4136-8b31-5a96e43cfea6)
+![Shopping list: light theme](https://github.com/user-attachments/assets/93c7924b-1861-4fca-a3fa-5c9390f8f491)
+![Shopping list: dark theme](https://github.com/user-attachments/assets/b0efe45d-8138-4973-8b13-2ef2b0290807)
+![Price comparison: light theme](https://github.com/user-attachments/assets/225066f1-a321-4ede-91e5-18a2193520fb)
+![Price comparison: dark theme](https://github.com/user-attachments/assets/e45ed1ee-90ff-4a7c-92ae-5a76bb53e923)
 
-2. Start the app
 
-   ```bash
-    npx expo start
-   ```
+## Tech Stack
+<img height="50" src="https://github.com/user-attachments/assets/958af20f-198d-465a-b381-7578c6eb136f" alt="React" title="React Native"/>
+<img height="50" src="https://github.com/user-attachments/assets/262eb873-1f66-40c3-9261-c05604451284" alt="TypeScript" title="TypeScript"/>
+<img height="50" src="https://github.com/user-attachments/assets/1f665f79-d1a3-464f-b4ac-3916b5d1a38b" alt="NPM" title="NPM"/>
 
-In the output, you'll find options to open the app in a
+## Scripts
+```npm start```: Starts the app in development mode.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```npm run build:apk```: Builds the apk. You must be logged in to an Expo Account.
