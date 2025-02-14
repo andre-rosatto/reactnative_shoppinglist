@@ -1,13 +1,12 @@
 import AddIemBar from "@/components/AddItemBar";
 import ListItem from "@/components/ListItem";
-import { COLORS } from "@/globals/colors";
-import { LIST_STORAGE_NAME } from "@/globals/env";
-import { createStyles } from "@/globals/utils";
+import { COLORS } from "@/constants/colors";
+import { LIST_STORAGE_NAME } from "@/constants/env";
 import useFileSystem from "@/hooks/useFileSystem";
 import { Item, List } from "@/typings/types";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { Appearance } from "react-native";
+import { Appearance, StyleSheet } from "react-native";
 import Animated, { LinearTransition } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -24,7 +23,7 @@ export default function ListScreen() {
 		fetchData();
 	}, []);
 
-	const theme = Appearance.getColorScheme() === 'dark' ? 'dark' : 'light';
+	const theme = Appearance.getColorScheme() === 'dark' ? COLORS.dark : COLORS.light;
 	const styles = createStyles(theme);
 	const currentList = lists.find(list => list.key === key);
 
@@ -50,14 +49,17 @@ export default function ListScreen() {
 	}
 
 	return (
-		<SafeAreaView style={styles.container}>
+		<SafeAreaView
+			style={styles.container}
+			edges={[]}
+		>
 			<Stack.Screen
 				options={{
 					headerTitle: `${currentList.title}`,
 					headerTitleAlign: 'center',
-					headerTintColor: COLORS[theme].text,
+					headerTintColor: theme.text,
 					headerStyle: {
-						backgroundColor: COLORS[theme].background,
+						backgroundColor: theme.background,
 					}
 				}}
 			/>
@@ -85,4 +87,17 @@ export default function ListScreen() {
 			/>
 		</SafeAreaView>
 	)
+}
+
+const createStyles = (theme: typeof COLORS.light) => {
+	return StyleSheet.create({
+		container: {
+			flex: 1,
+			backgroundColor: theme.background,
+		},
+		listContainer: {
+			flex: 1,
+			paddingHorizontal: 8,
+		},
+	});
 }
