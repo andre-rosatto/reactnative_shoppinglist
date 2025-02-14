@@ -1,11 +1,13 @@
 import AddIemBar from "@/components/AddItemBar";
 import { COLORS } from "@/globals/colors";
+import { COMPARE_STORAGE_NAME } from "@/globals/env";
 import { createStyles } from "@/globals/utils";
+import useFileSystem from "@/hooks/useFileSystem";
 import { PricedItem } from "@/typings/types";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Appearance, Pressable, Text, TextInput, View } from "react-native";
 import Animated, { LinearTransition } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -18,11 +20,20 @@ type EditItem = {
 
 export default function Compare() {
 	const [items, setItems] = useState<PricedItem[]>([]);
+	const { loadData, saveData } = useFileSystem<PricedItem[]>(COMPARE_STORAGE_NAME);
 	const [editItem, setEditItem] = useState<EditItem>({
 		key: null,
 		value: '',
 		field: 'title'
 	});
+
+	useEffect(() => {
+		const fetchData = async () => {
+			const data = await loadData();
+			setItems(data ?? []);
+		}
+		fetchData();
+	}, []);
 
 	const theme = Appearance.getColorScheme() === 'dark' ? 'dark' : 'light';
 	const styles = createStyles(theme);
@@ -40,29 +51,39 @@ export default function Compare() {
 	}
 
 	const handleAddPress = (val: string) => {
-		setItems([{
+		const nextItems = [{
 			key: Date.now().toString(),
 			title: val,
 			price: 0,
 			amount: 0
-		}, ...items]);
+		}, ...items];
+		setItems(nextItems);
+		saveData(nextItems);
 	}
-	
-	const handleDeletePress = (item: PricedItem) => setItems(items => items.filter(i => i.key !== item.key));
+
+	const handleDeletePress = (item: PricedItem) => {
+		const nextItems = items.filter(i => i.key !== item.key);
+		setItems(nextItems);
+		saveData(nextItems);
+	}
 
 	const handleTitleChange = (item: PricedItem) => {
-		setItems(items => items.map(i => i.key !== item.key ? i : {...item, title: editItem.value}));
-		setEditItem(editItem => ({...editItem, key: null}))
+		const nextItems = items.map(i => i.key !== item.key ? i : { ...item, title: editItem.value });
+		setItems(nextItems);
+		setEditItem(editItem => ({ ...editItem, key: null }));
+		saveData(nextItems);
 	}
 
 	const handlePriceChange = (item: PricedItem) => {
-		setItems(items => items.map(i => i.key !== item.key ? i : {...item, price: Math.abs(parseFloat(editItem.value))}));
-		setEditItem(editItem => ({...editItem, key: null}))
+		setItems(items => items.map(i => i.key !== item.key ? i : { ...item, price: Math.abs(parseFloat(editItem.value)) }));
+		setEditItem(editItem => ({ ...editItem, key: null }))
 	}
 
 	const handleAmountChange = (item: PricedItem) => {
-		setItems(items => items.map(i => i.key !== item.key ? i : {...item, amount: Math.max(0.01, parseFloat(editItem.value))}));
-		setEditItem(editItem => ({...editItem, key: null}))
+		const nextItems = items.map(i => i.key !== item.key ? i : { ...item, amount: Math.max(0.01, parseFloat(editItem.value)) });
+		setItems(nextItems);
+		setEditItem(editItem => ({ ...editItem, key: null }));
+		saveData(nextItems);
 	}
 
 	return (
@@ -97,13 +118,13 @@ export default function Compare() {
 								style={styles.text}
 								selectTextOnFocus
 								value={(editItem.key === item.key && editItem.field === 'title') ? editItem.value : item.title}
-								onChangeText={val => setEditItem(editItem => ({...editItem, value: val}))}
-								onFocus={() => setEditItem({key: item.key, value: item.title, field: 'title'})}
+								onChangeText={val => setEditItem(editItem => ({ ...editItem, value: val }))}
+								onFocus={() => setEditItem({ key: item.key, value: item.title, field: 'title' })}
 								onBlur={() => handleTitleChange(item)}
 							/>
 
 							<View style={styles.compareDataContainer}>
-								
+
 								<View style={styles.compareField}>
 									<Text style={styles.compareItemLabel}>Preço</Text>
 									<TextInput
@@ -114,12 +135,12 @@ export default function Compare() {
 										selectTextOnFocus
 										keyboardType="numeric"
 										value={(editItem.key === item.key && editItem.field === 'price') ? editItem.value : item.price.toFixed(2)}
-										onChangeText={val => setEditItem(editItem => ({...editItem, value: val}))}
-										onFocus={() => setEditItem({key: item.key, value: item.price.toFixed(2), field: 'price'})}
+										onChangeText={val => setEditItem(editItem => ({ ...editItem, value: val }))}
+										onFocus={() => setEditItem({ key: item.key, value: item.price.toFixed(2), field: 'price' })}
 										onBlur={() => handlePriceChange(item)}
 									/>
 								</View>
-								
+
 								<View style={styles.compareField}>
 									<Text style={styles.compareItemLabel}>Quantidade</Text>
 									<TextInput
@@ -130,8 +151,8 @@ export default function Compare() {
 										selectTextOnFocus
 										keyboardType="numeric"
 										value={(editItem.key === item.key && editItem.field === 'amount') ? editItem.value : item.amount.toFixed(2)}
-										onChangeText={val => setEditItem(editItem => ({...editItem, value: val}))}
-										onFocus={() => setEditItem({key: item.key, value: item.amount.toFixed(2), field: 'amount'})}
+										onChangeText={val => setEditItem(editItem => ({ ...editItem, value: val }))}
+										onFocus={() => setEditItem({ key: item.key, value: item.amount.toFixed(2), field: 'amount' })}
 										onBlur={() => handleAmountChange(item)}
 									/>
 								</View>
