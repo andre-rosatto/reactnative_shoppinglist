@@ -1,9 +1,9 @@
 import AddIemBar from "@/components/AddItemBar";
 import ListItem from "@/components/ListItem";
 import { COLORS } from "@/globals/colors";
-import { STORAGE_NAME } from "@/globals/env";
+import { LIST_STORAGE_NAME } from "@/globals/env";
 import { createStyles } from "@/globals/utils";
-import useAsyncStorage from "@/hooks/useAsyncStorage";
+import useFileSystem from "@/hooks/useFileSystem";
 import { Item, List } from "@/typings/types";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
@@ -14,10 +14,14 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function ListScreen() {
 	const { key } = useLocalSearchParams();
 	const [lists, setLists] = useState<List[]>([]);
-	const { loadStorage, saveStorage } = useAsyncStorage<List[]>(STORAGE_NAME);
+	const { loadData, saveData } = useFileSystem<List[]>(LIST_STORAGE_NAME);
 
 	useEffect(() => {
-		loadStorage(data => setLists(data ?? []));
+		const fetchData = async () => {
+			const data = await loadData();
+			setLists(data ?? []);
+		}
+		fetchData();
 	}, []);
 
 	const theme = Appearance.getColorScheme() === 'dark' ? 'dark' : 'light';
@@ -38,11 +42,11 @@ export default function ListScreen() {
 			title: val,
 			bought: false
 		});
-		const nextLists= lists.map(list =>
-			list.key !== key ? list : {...list, items: [newItem, ...list.items]}
+		const nextLists = lists.map(list =>
+			list.key !== key ? list : { ...list, items: [newItem, ...list.items] }
 		);
 		setLists(nextLists);
-		saveStorage(nextLists);
+		saveData(nextLists);
 	}
 
 	return (
@@ -57,7 +61,7 @@ export default function ListScreen() {
 					}
 				}}
 			/>
-			
+
 			<AddIemBar
 				type="item"
 				onAddPress={handleNewItemPress}
@@ -74,7 +78,7 @@ export default function ListScreen() {
 						item={item}
 						onListChange={(nextLists: List[]) => {
 							setLists(nextLists);
-							saveStorage(nextLists);
+							saveData(nextLists);
 						}}
 					/>
 				)}
