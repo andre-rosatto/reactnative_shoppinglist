@@ -116,6 +116,7 @@ const createStyles = (theme: typeof COLORS.light) => {
 			borderColor: theme.border,
 			borderRadius: 4,
 			paddingHorizontal: 8,
+			paddingBottom: 4,
 			marginBottom: 4,
 		},
 		container: {
