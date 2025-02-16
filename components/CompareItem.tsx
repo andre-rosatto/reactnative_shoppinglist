@@ -96,7 +96,7 @@ export default function CompareItem({
 					</View>
 
 					<View style={styles.ratioField}>
-						<Text style={[styles.itemLabel, styles.rationLabel]}>Preço/unid.</Text>
+						<Text style={[styles.itemLabel, styles.ratioLabel]}>Preço/unid.</Text>
 						<Text style={styles.itemResult}>{pricePerUnit().toFixed(2)}</Text>
 					</View>
 
@@ -162,7 +162,7 @@ const createStyles = (theme: typeof COLORS.light) => {
 			width: 100,
 			marginRight: 8,
 		},
-		rationLabel: {
+		ratioLabel: {
 			textAlign: 'right',
 		},
 		itemResult: {
