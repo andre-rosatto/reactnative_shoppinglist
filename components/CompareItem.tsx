@@ -39,7 +39,7 @@ export default function CompareItem({
 			<View style={styles.container}>
 				<View style={styles.titleContainer}>
 					<TextInput
-						style={[styles.titleInput, styles.text]}
+						style={styles.titleInput}
 						selectTextOnFocus
 						value={itemTitle}
 						onChangeText={setItemTitle}
@@ -129,8 +129,6 @@ const createStyles = (theme: typeof COLORS.light) => {
 		},
 		titleInput: {
 			flex: 1,
-		},
-		text: {
 			color: theme.text,
 			fontSize: 18,
 		},
