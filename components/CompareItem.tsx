@@ -1,7 +1,7 @@
 import { COLORS } from "@/constants/colors";
 import { PricedItem } from "@/typings/types";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Appearance, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
 interface CompareItem {

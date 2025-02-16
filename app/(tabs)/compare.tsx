@@ -11,20 +11,10 @@ import { Appearance, StyleSheet } from "react-native";
 import Animated, { LinearTransition } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-type EditItem = {
-	key: string | null,
-	value: string,
-	field: 'title' | 'price' | 'amount'
-};
 
 export default function Compare() {
 	const [items, setItems] = useState<PricedItem[]>([]);
 	const { loadData, saveData } = useFileSystem<PricedItem[]>(COMPARE_STORAGE_NAME);
-	const [editItem, setEditItem] = useState<EditItem>({
-		key: null,
-		value: '',
-		field: 'title'
-	});
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -69,19 +59,16 @@ export default function Compare() {
 	const handleTitleChange = (item: PricedItem, newTitle: string) => {
 		const nextItems = items.map(i => i.key !== item.key ? i : { ...item, title: newTitle });
 		setItems(nextItems);
-		setEditItem(editItem => ({ ...editItem, key: null }));
 		saveData(nextItems);
 	}
 
 	const handlePriceChange = (item: PricedItem, newPrice: number) => {
 		setItems(items => items.map(i => i.key !== item.key ? i : { ...item, price: newPrice }));
-		setEditItem(editItem => ({ ...editItem, key: null }))
 	}
 
 	const handleAmountChange = (item: PricedItem, newAmount: number) => {
 		const nextItems = items.map(i => i.key !== item.key ? i : { ...item, amount: newAmount });
 		setItems(nextItems);
-		setEditItem(editItem => ({ ...editItem, key: null }));
 		saveData(nextItems);
 	}
 
