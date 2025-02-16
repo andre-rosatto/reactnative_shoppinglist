@@ -1,12 +1,11 @@
 import { COLORS } from "@/constants/colors";
+import { PricedItem } from "@/typings/types";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Appearance, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
 interface CompareItem {
-	title: string;
-	price: number;
-	amount: number;
+	item: PricedItem;
 	onTitleChange: (newTitle: string) => void;
 	onPriceChange: (newPrice: number) => void;
 	onAmountChange: (newAmount: number) => void;
@@ -14,17 +13,15 @@ interface CompareItem {
 }
 
 export default function CompareItem({
-	title,
-	price,
-	amount,
+	item,
 	onTitleChange,
 	onPriceChange,
 	onAmountChange,
 	onDeletePress,
 }: CompareItem) {
-	const [itemTitle, setItemTitle] = useState(title);
-	const [itemPrice, setItemPrice] = useState(price.toFixed(2));
-	const [itemAmount, setItemAmount] = useState(amount.toFixed(2));
+	const [itemTitle, setItemTitle] = useState(() => item.title);
+	const [itemPrice, setItemPrice] = useState(() => item.price.toFixed(2));
+	const [itemAmount, setItemAmount] = useState(() => item.amount.toFixed(2));
 
 	const theme = Appearance.getColorScheme() === 'dark' ? COLORS.dark : COLORS.light;
 	const styles = createStyles(theme);
@@ -42,7 +39,7 @@ export default function CompareItem({
 			<View style={styles.container}>
 				<View style={styles.titleContainer}>
 					<TextInput
-						style={styles.text}
+						style={[styles.titleInput, styles.text]}
 						selectTextOnFocus
 						value={itemTitle}
 						onChangeText={setItemTitle}
@@ -93,7 +90,7 @@ export default function CompareItem({
 							onBlur={() => {
 								const value = formatNumber(itemAmount);
 								setItemAmount(value.toFixed(2));
-								onPriceChange(value);
+								onAmountChange(value);
 							}}
 						/>
 					</View>
@@ -128,7 +125,10 @@ const createStyles = (theme: typeof COLORS.light) => {
 		},
 		titleContainer: {
 			flexDirection: 'row',
-			justifyContent: 'space-between',
+			gap: 8,
+		},
+		titleInput: {
+			flex: 1,
 		},
 		text: {
 			color: theme.text,

@@ -26,10 +26,7 @@ export default function NoteItem({ text, onChange, onDeletePress }: NoteItemProp
 				onBlur={() => onChange(noteText)}
 			/>
 
-			<Pressable
-				style={styles.deleteIcon}
-				onPress={onDeletePress}
-			>
+			<Pressable onPress={onDeletePress}>
 				<Ionicons name="trash" size={24} color={theme.alert} />
 			</Pressable>
 		</View>
@@ -45,16 +42,14 @@ const createStyles = (theme: typeof COLORS.light) => {
 			flexDirection: 'row',
 			justifyContent: 'space-between',
 			gap: 4,
+			paddingHorizontal: 8,
+			paddingVertical: 8,
 			marginBottom: 6,
 		},
 		input: {
 			flex: 1,
-			paddingHorizontal: 8,
 			fontSize: 16,
-		},
-		deleteIcon: {
-			marginTop: 8,
-			marginRight: 8,
+			color: theme.text,
 		},
 	});
 }

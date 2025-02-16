@@ -114,9 +114,7 @@ export default function Compare() {
 				data={sortItems()}
 				renderItem={({ item }) => (
 					<CompareItem
-						title={item.title}
-						price={item.price}
-						amount={item.amount}
+						item={item}
 						onTitleChange={(newTitle) => handleTitleChange(item, newTitle)}
 						onPriceChange={(newPrice) => handlePriceChange(item, newPrice)}
 						onAmountChange={(newAmount) => handleAmountChange(item, newAmount)}

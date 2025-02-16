@@ -9,7 +9,6 @@ export default function useFileSystem<T>(filename: string) {
 			const result = await FileSystem.readAsStringAsync(`${directory}/${filename}`);
 			return JSON.parse(result) as T;
 		} catch (e) {
-			console.error(e);
 			return null;
 		}
 	}, [filename]);
@@ -20,7 +19,7 @@ export default function useFileSystem<T>(filename: string) {
 			if (!directory) return;
 			await FileSystem.writeAsStringAsync(`${directory}/${filename}`, JSON.stringify(data));
 		} catch (e) {
-			console.error(e);
+
 		}
 	}, [filename]);
 
