@@ -4,7 +4,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { useState } from "react";
 import { Appearance, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
-interface CompareItem {
+interface CompareItemProps {
 	item: PricedItem;
 	onTitleChange: (newTitle: string) => void;
 	onPriceChange: (newPrice: number) => void;
@@ -18,7 +18,7 @@ export default function CompareItem({
 	onPriceChange,
 	onAmountChange,
 	onDeletePress,
-}: CompareItem) {
+}: CompareItemProps) {
 	const [itemTitle, setItemTitle] = useState(item.title);
 	const [itemPrice, setItemPrice] = useState(item.price.toFixed(2));
 	const [itemAmount, setItemAmount] = useState(item.amount.toFixed(2));
