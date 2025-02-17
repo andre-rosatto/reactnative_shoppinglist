@@ -27,13 +27,13 @@ export default function Compare() {
 	const theme = Appearance.getColorScheme() === 'dark' ? COLORS.dark : COLORS.light;
 	const styles = createStyles(theme);
 
-	const pricePerUnit = (item: PricedItem): number => item.price / (item.amount || 1);
+	const pricePerUnit = (item: PricedItem): number => item.amount > 0 ? item.price / item.amount : 0;
 
 	const sortItems = (): PricedItem[] => {
 		const sortedItems = [...items];
 		sortedItems.sort((a, b) => {
-			if (a.price < 0.01 || a.amount < 0.01) return -1;
-			if (b.price < 0.01 || b.amount < 0.01) return 1;
+			if (a.price === 0 && b.price > 0) return -1;
+			if (a.amount === 0 && b.amount > 0) return 1;
 			return pricePerUnit(a) - pricePerUnit(b);
 		});
 		return sortedItems;

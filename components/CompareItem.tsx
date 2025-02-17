@@ -19,14 +19,14 @@ export default function CompareItem({
 	onAmountChange,
 	onDeletePress,
 }: CompareItem) {
-	const [itemTitle, setItemTitle] = useState(() => item.title);
-	const [itemPrice, setItemPrice] = useState(() => item.price.toFixed(2));
-	const [itemAmount, setItemAmount] = useState(() => item.amount.toFixed(2));
+	const [itemTitle, setItemTitle] = useState(item.title);
+	const [itemPrice, setItemPrice] = useState(item.price.toFixed(2));
+	const [itemAmount, setItemAmount] = useState(item.amount.toFixed(2));
 
 	const theme = Appearance.getColorScheme() === 'dark' ? COLORS.dark : COLORS.light;
 	const styles = createStyles(theme);
 
-	const pricePerUnit = () => formatNumber(itemPrice) / (formatNumber(itemAmount) || 1);
+	const pricePerUnit = () => item.amount > 0 ? item.price / item.amount : 0;
 
 	const formatNumber = (val: string) => {
 		const match = val.replaceAll(',', '.').match(/[\d\.]+/);
